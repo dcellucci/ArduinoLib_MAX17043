@@ -26,6 +26,24 @@ float MAX17043::getSoC() {
 	return MSB + decimal;	
 }
 
+void MAX17043::getSoCBytes(byte &MSB, byte &LSB){
+	readRegister(SOC_REGISTER, MSB, LSB);
+}
+
+void MAX17043::getVCellBytes(byte &MSB, byte &LSB){
+	readRegister(VCELL_REGISTER, MSB, LSB);
+}
+
+float MAX17043::SoCFromBytes(byte MSB, byte LSB){
+	float decimal = LSB / 256.0;
+	return MSB + decimal;	
+}
+
+float MAX17043::VCellFromBytes(byte MSB, byte LSB){
+	int value = (MSB << 4) | (LSB >> 4);
+	return map(value, 0x000, 0xFFF, 0, 50000) / 10000.0;
+}
+
 int MAX17043::getVersion() {
 
 	byte MSB = 0;

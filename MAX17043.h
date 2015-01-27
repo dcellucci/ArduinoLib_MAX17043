@@ -23,6 +23,11 @@ class MAX17043 {
 	
 		float getVCell();
 		float getSoC();
+		void getSoCBytes(byte &MSB, byte &LSB);
+		void getVCellBytes(byte &MSB, byte &LSB);
+		float SoCFromBytes(byte MSB, byte LSB);
+		float VCellFromBytes(byte MSB, byte LSB);
+
 		int getVersion();
 		byte getCompensateValue();
 		byte getAlertThreshold();
