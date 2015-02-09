@@ -3,7 +3,7 @@
 // Luca Dentella (http://www.lucadentella.it)
 
 #include "MAX17043.h"
-#include "Wire.h"
+#include "I2C.h"
 
 float MAX17043::getVCell() {
 
@@ -26,12 +26,18 @@ float MAX17043::getSoC() {
 	return MSB + decimal;	
 }
 
-void MAX17043::getSoCBytes(byte &MSB, byte &LSB){
-	readRegister(SOC_REGISTER, MSB, LSB);
+uint8_t MAX17043::getSoCBytes(byte &MSB, byte &LSB){
+
+	uint8_t error = readRegister(SOC_REGISTER, MSB, LSB);
+
+	return error;
 }
 
-void MAX17043::getVCellBytes(byte &MSB, byte &LSB){
-	readRegister(VCELL_REGISTER, MSB, LSB);
+uint8_t MAX17043::getVCellBytes(byte &MSB, byte &LSB){
+
+	uint8_t error = readRegister(VCELL_REGISTER, MSB, LSB);
+
+	return error; 
 }
 
 float MAX17043::SoCFromBytes(byte MSB, byte LSB){
@@ -100,38 +106,44 @@ void MAX17043::clearAlert() {
 	readConfigRegister(MSB, LSB);	
 }
 
-void MAX17043::reset() {
+uint8_t MAX17043::reset() {
 	
-	writeRegister(COMMAND_REGISTER, 0x00, 0x54);
+	uint8_t error = writeRegister(COMMAND_REGISTER, 0x00, 0x54);
+
+	return error;
 }
 
-void MAX17043::quickStart() {
+uint8_t MAX17043::quickStart() {
 	
-	writeRegister(MODE_REGISTER, 0x40, 0x00);
+	uint8_t error = writeRegister(MODE_REGISTER, 0x40, 0x00);
+
+	return error;
 }
 
 
-void MAX17043::readConfigRegister(byte &MSB, byte &LSB) {
+uint8_t MAX17043::readConfigRegister(byte &MSB, byte &LSB) {
 
-	readRegister(CONFIG_REGISTER, MSB, LSB);
+	uint8_t error = readRegister(CONFIG_REGISTER, MSB, LSB);
+
+	return error;
 }
 
-void MAX17043::readRegister(byte startAddress, byte &MSB, byte &LSB) {
-
-	Wire.beginTransmission(MAX17043_ADDRESS);
-	Wire.write(startAddress);
-	Wire.endTransmission();
+uint8_t MAX17043::readRegister(byte startAddress, byte &MSB, byte &LSB) {
 	
-	Wire.requestFrom(MAX17043_ADDRESS, 2);
-	MSB = Wire.read();
-	LSB = Wire.read();
+	uint8_t error = I2c.read(int(MAX17043_ADDRESS),int(startAddress),2); 
+	
+	MSB = I2c.receive();
+	LSB = I2c.receive();
+
+	return error;
 }
 
-void MAX17043::writeRegister(byte address, byte MSB, byte LSB) {
+uint8_t MAX17043::writeRegister(byte address, byte MSB, byte LSB) {
+	
+	uint8_t error = I2c.write(int(MAX17043_ADDRESS),int(address),int(MSB));
+	
+	if(error == 0)
+		error = I2c.write(int(MAX17043_ADDRESS),int(address),int(LSB));
 
-	Wire.beginTransmission(MAX17043_ADDRESS);
-	Wire.write(address);
-	Wire.write(MSB);
-	Wire.write(LSB);
-	Wire.endTransmission();
+	return error;
 }

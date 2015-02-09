@@ -23,8 +23,8 @@ class MAX17043 {
 	
 		float getVCell();
 		float getSoC();
-		void getSoCBytes(byte &MSB, byte &LSB);
-		void getVCellBytes(byte &MSB, byte &LSB);
+		uint8_t getSoCBytes(byte &MSB, byte &LSB);
+		uint8_t getVCellBytes(byte &MSB, byte &LSB);
 		float SoCFromBytes(byte MSB, byte LSB);
 		float VCellFromBytes(byte MSB, byte LSB);
 
@@ -35,14 +35,14 @@ class MAX17043 {
 		boolean inAlert();
 		void clearAlert();
 		
-		void reset();
-		void quickStart();
+		uint8_t reset();
+		uint8_t quickStart();
 	
 	private:
 
 		void readConfigRegister(byte &MSB, byte &LSB);
-		void readRegister(byte startAddress, byte &MSB, byte &LSB);
-		void writeRegister(byte address, byte MSB, byte LSB);
+		uint8_t readRegister(byte startAddress, byte &MSB, byte &LSB);
+		uint8_t writeRegister(byte address, byte MSB, byte LSB);
 };
 
 #endif
