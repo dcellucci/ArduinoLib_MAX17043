@@ -1,6 +1,7 @@
 // MAX17043/44 library for Arduino
 //
-// Luca Dentella (http://www.lucadentella.it)
+// Original code by Luca Dentella (http://www.lucadentella.it)
+// Heavily modified by Daniel Cellucci (http://cellu.cc)
 
 #include "MAX17043.h"
 #include "I2C.h"

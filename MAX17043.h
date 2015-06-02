@@ -40,7 +40,7 @@ class MAX17043 {
 	
 	private:
 
-		void readConfigRegister(byte &MSB, byte &LSB);
+		uint8_t readConfigRegister(byte &MSB, byte &LSB);
 		uint8_t readRegister(byte startAddress, byte &MSB, byte &LSB);
 		uint8_t writeRegister(byte address, byte MSB, byte LSB);
 };
